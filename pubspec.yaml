@@ -1,0 +1,88 @@
+name: qrcodepro
+description: "Professional Qrcode scanner"
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.2 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+
+  #general dependencies
+  shared_preferences: ^2.2.3
+  flutter_native_splash: ^2.4.0
+  icons_launcher: ^2.1.7
+  flutter_onboarding_slider: ^1.0.11
+  custom_navigation_bar: ^0.8.2
+  logger: ^2.3.0
+  sweetsheet: ^0.4.0
+  flutter_tts: ^3.7.0
+  connectivity_plus: ^4.0.1
+  internet_connection_checker_plus: ^1.0.1
+  intl: ^0.18.1
+  permission_handler: ^10.4.1
+  async: ^2.11.0
+  url_launcher: ^6.1.11
+  lottie: ^2.4.0
+  font_awesome_flutter: ^9.0.0
+  loading_animation_widget: ^1.2.0+4
+  toggle_switch: ^2.1.0
+  animations: ^2.0.7
+  flutter_inappwebview: ^6.0.0-beta.24+1
+  flutter_staggered_animations: ^1.1.1
+  shimmer: ^3.0.0
+  line_icons: ^2.0.1
+  flutter_zoom_drawer: ^3.1.1
+  auto_size_text: ^3.0.0
+  image_picker: ^1.0.0
+  cross_file_image: ^1.0.0
+  rolling_switch: ^0.0.2
+  flutter_phone_direct_caller: ^2.1.1
+  background_sms: ^0.0.4
+  top_snackbar_flutter: ^3.1.0
+
+
+
+  #state management dependencies
+  get: ^4.6.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+icons_launcher:
+  image_path: "assets/images/logo.png"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/logo_light.png
+  branding: assets/images/branding_light.png
+  color_dark: "#121212"
+  image_dark: assets/images/logo_dark.png
+  branding_dark: assets/images/branding_dark.png
+
+  android_12:
+    image: assets/images/logo_light.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/images/logo_dark.png
+    icon_background_color_dark: "#121212"
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/fonts/
+    - assets/images/
+    - assets/gifs/
+    - assets/lottie_animations/
