@@ -27,6 +27,10 @@ class Languages extends Translations {
           'chooseLanguage': 'Choose your preferred language',
           'english': 'ENGLISH',
           'arabic': 'العربية',
+          'scan': 'Scan',
+          'history': 'History',
+          'create': 'Create',
+          'settings': 'Settings',
         },
       };
 }

@@ -1,8 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:custom_navigation_bar/custom_navigation_bar.dart';
+import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qrcodepro/src/constants/colors.dart';
+import 'package:qrcodepro/src/features/scan/controllers/scan_screen_controller.dart';
 
 import '../controllers/home_screen_controller.dart';
 
@@ -13,92 +13,85 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final homeScreenController = Get.put(HomeScreenController());
     return Scaffold(
-      body: Stack(
-        children: [
-          Obx(
-            () => homeScreenController.navBarIndex.value == 0
-                ? const Scaffold(backgroundColor: Colors.white60)
-                : homeScreenController.navBarIndex.value == 1
-                    ? const Scaffold(backgroundColor: Colors.blue)
-                    : homeScreenController.navBarIndex.value == 2
-                        ? const Scaffold(backgroundColor: Colors.purple)
-                        : const Scaffold(backgroundColor: Colors.grey),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Obx(
-                () => CustomNavigationBar(
-                  iconSize: 30.0,
-                  selectedColor: kDarkBlueColor,
-                  strokeColor: kDarkBlueShadeColor,
-                  unSelectedColor: Colors.grey[600],
-                  backgroundColor: Colors.white,
-                  elevation: 5,
-                  borderRadius: const Radius.circular(20.0),
-                  items: [
-                    CustomNavigationBarItem(
-                      icon: const Icon(Icons.qr_code_scanner),
-                      title: AutoSizeText(
-                        'Scan',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: homeScreenController.navBarIndex.value == 0
-                              ? kDarkBlueColor
-                              : Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                    CustomNavigationBarItem(
-                      icon: const Icon(Icons.history_outlined),
-                      title: AutoSizeText(
-                        'History',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: homeScreenController.navBarIndex.value == 1
-                              ? kDarkBlueColor
-                              : Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                    CustomNavigationBarItem(
-                      icon: const Icon(Icons.add_box_outlined),
-                      title: AutoSizeText(
-                        'Create',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: homeScreenController.navBarIndex.value == 2
-                              ? kDarkBlueColor
-                              : Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                    CustomNavigationBarItem(
-                      icon: const Icon(Icons.settings),
-                      title: AutoSizeText(
-                        'Settings',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: homeScreenController.navBarIndex.value == 3
-                              ? kDarkBlueColor
-                              : Colors.grey[600],
-                        ),
-                      ),
-                    ),
-                  ],
-                  currentIndex: homeScreenController.navBarIndex.value,
-                  onTap: homeScreenController.navigationBarOnTap,
-                  isFloating: true,
-                ),
-              ),
-            ),
-          ),
-        ],
+      body: PageView(
+        controller: homeScreenController.pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: List.generate(homeScreenController.bottomBarPages.length,
+            (index) => homeScreenController.bottomBarPages[index]),
       ),
-      backgroundColor: Colors.grey.shade100,
+      extendBody: true,
+      bottomNavigationBar: (homeScreenController.bottomBarPages.length <=
+              homeScreenController.maxCount)
+          ? AnimatedNotchBottomBar(
+              notchBottomBarController:
+                  homeScreenController.navigationController,
+              color: Colors.white,
+              showLabel: true,
+              textOverflow: TextOverflow.visible,
+              maxLine: 1,
+              shadowElevation: 5,
+              kBottomRadius: 28.0,
+              removeMargins: false,
+              bottomBarWidth: 500,
+              showShadow: true,
+              durationInMilliSeconds: 300,
+              itemLabelStyle: const TextStyle(fontSize: 10),
+              elevation: 1,
+              bottomBarItems: [
+                BottomBarItem(
+                  inActiveItem: const Icon(
+                    Icons.qr_code_scanner,
+                    color: Colors.grey,
+                  ),
+                  activeItem: const Icon(
+                    Icons.qr_code_scanner,
+                    color: kDarkBlueColor,
+                  ),
+                  itemLabel: 'scan'.tr,
+                ),
+                BottomBarItem(
+                  inActiveItem: const Icon(
+                    Icons.history,
+                    color: Colors.grey,
+                  ),
+                  activeItem: const Icon(
+                    Icons.history,
+                    color: kDarkBlueColor,
+                  ),
+                  itemLabel: 'history'.tr,
+                ),
+                BottomBarItem(
+                  inActiveItem: const Icon(
+                    Icons.add_box_outlined,
+                    color: Colors.grey,
+                  ),
+                  activeItem: const Icon(
+                    Icons.add_box_outlined,
+                    color: kDarkBlueColor,
+                  ),
+                  itemLabel: 'create'.tr,
+                ),
+                BottomBarItem(
+                  inActiveItem: const Icon(
+                    Icons.settings,
+                    color: Colors.grey,
+                  ),
+                  activeItem: const Icon(
+                    Icons.settings,
+                    color: kDarkBlueColor,
+                  ),
+                  itemLabel: 'settings'.tr,
+                ),
+              ],
+              onTap: (index) {
+                homeScreenController.pageController.jumpToPage(index);
+                if (index != 0 && Get.isRegistered<ScanScreenController>()) {
+                  Get.delete<ScanScreenController>();
+                }
+              },
+              kIconSize: 24.0,
+            )
+          : null,
     );
   }
 }

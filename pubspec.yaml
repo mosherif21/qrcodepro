@@ -16,7 +16,8 @@ dependencies:
   flutter_native_splash: ^2.4.0
   icons_launcher: ^2.1.7
   flutter_onboarding_slider: ^1.0.11
-  custom_navigation_bar: ^0.8.2
+  qr_code_scanner: ^1.0.1
+  animated_notch_bottom_bar: ^1.0.3
   logger: ^2.3.0
   sweetsheet: ^0.4.0
   flutter_tts: ^3.7.0
@@ -26,7 +27,7 @@ dependencies:
   permission_handler: ^10.4.1
   async: ^2.11.0
   url_launcher: ^6.1.11
-  lottie: ^2.4.0
+  lottie: ^1.2.0
   font_awesome_flutter: ^9.0.0
   loading_animation_widget: ^1.2.0+4
   toggle_switch: ^2.1.0
