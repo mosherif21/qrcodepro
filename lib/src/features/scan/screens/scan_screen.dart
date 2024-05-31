@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qrcodepro/src/constants/colors.dart';
 import 'package:qrcodepro/src/features/scan/controllers/scan_screen_controller.dart';
+import 'package:qrcodepro/src/general/common_widgets/icon_button_text.dart';
 import 'package:qrcodepro/src/general/general_functions.dart';
 
 class ScanScreen extends StatelessWidget {
@@ -13,6 +13,7 @@ class ScanScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final scanScreenController = Get.put(ScanScreenController());
     final screenHeight = getScreenHeight(context);
+    final screenWidth = getScreenWidth(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -31,44 +32,67 @@ class ScanScreen extends StatelessWidget {
           Obx(
             () => scanScreenController.qrControllerCreated.value
                 ? Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Obx(
-                        () => scanScreenController.resultCode.value.isNotEmpty
-                            ? Text(
-                                'Barcode Type: ${describeEnum(scanScreenController.resultFormat)}   Data: ${scanScreenController.resultCode}',
-                                style: const TextStyle(color: Colors.blue),
-                              )
-                            : const Text(
-                                'Scan a code',
-                                style: TextStyle(color: Colors.blue),
-                              ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            margin: const EdgeInsets.all(8),
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                await scanScreenController.qrController
-                                    ?.toggleFlash();
-                              },
-                              child: Text('Flash'),
-                            ),
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: screenHeight * 0.7),
+                      Center(
+                        child: Container(
+                          width: screenWidth * 0.6,
+                          decoration: const BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.all(Radius.circular(28)),
                           ),
-                          Container(
-                            margin: const EdgeInsets.all(8),
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                await scanScreenController.qrController
-                                    ?.flipCamera();
-                              },
-                              child: Text('Camera facing'),
-                            ),
-                          )
-                        ],
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              IconButtonText(
+                                onPress:
+                                    scanScreenController.onOpenGalleryPress,
+                                iconColor: kDarkBlueColor,
+                                textColor: kDarkBlueColor,
+                                icon: Icons.image,
+                                buttonText: 'gallery'.tr,
+                              ),
+                              Obx(
+                                () => IconButtonText(
+                                  onPress: scanScreenController
+                                          .togglingFlash.value
+                                      ? () {}
+                                      : scanScreenController.onFlashTogglePress,
+                                  iconColor: scanScreenController.flashOn.value
+                                      ? kDarkBlueColor
+                                      : Colors.grey,
+                                  textColor: kDarkBlueColor,
+                                  icon: Icons.flash_on,
+                                  buttonText: 'flash'.tr,
+                                ),
+                              ),
+                              Obx(
+                                () => IconButtonText(
+                                  onPress: scanScreenController
+                                          .flippingCamera.value
+                                      ? () {}
+                                      : scanScreenController.onFlipCameraPress,
+                                  iconColor: kDarkBlueColor,
+                                  textColor: kDarkBlueColor,
+                                  icon: Icons.camera_front_outlined,
+                                  buttonText: 'flip'.tr,
+                                ),
+                                //     IconButton(
+                                //   enableFeedback: true,
+                                //   tooltip: 'Flip camera',
+                                //   onPressed: scanScreenController
+                                //           .flippingCamera.value
+                                //       ? null
+                                //       : scanScreenController.onFlipCameraPress,
+                                //   icon: const Icon(Icons.camera_front_outlined,
+                                //       color: kDarkBlueColor),
+                                // ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   )
@@ -79,6 +103,17 @@ class ScanScreen extends StatelessWidget {
     );
   }
 
+  // Obx(
+  //   () => scanScreenController.resultCode.value.isNotEmpty
+  //       ? Text(
+  //           'Barcode Type: ${describeEnum(scanScreenController.resultFormat)}   Data: ${scanScreenController.resultCode}',
+  //           style: const TextStyle(color: Colors.blue),
+  //         )
+  //       : const Text(
+  //           'Scan a code',
+  //           style: TextStyle(color: Colors.blue),
+  //         ),
+  // ),
   void _onPermissionSet(
       BuildContext context, QRViewController ctrl, bool granted) {
     if (!granted) {

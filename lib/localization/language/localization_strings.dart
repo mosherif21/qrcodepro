@@ -31,6 +31,9 @@ class Languages extends Translations {
           'history': 'History',
           'create': 'Create',
           'settings': 'Settings',
+          'gallery': 'Gallery',
+          'flash': 'Flash',
+          'flip': 'Flip'
         },
       };
 }
