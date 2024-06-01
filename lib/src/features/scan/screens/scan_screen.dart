@@ -93,17 +93,6 @@ class ScanScreen extends StatelessWidget {
     );
   }
 
-  // Obx(
-  //   () => scanScreenController.resultCode.value.isNotEmpty
-  //       ? Text(
-  //           'Barcode Type: ${describeEnum(scanScreenController.resultFormat)}   Data: ${scanScreenController.resultCode}',
-  //           style: const TextStyle(color: Colors.blue),
-  //         )
-  //       : const Text(
-  //           'Scan a code',
-  //           style: TextStyle(color: Colors.blue),
-  //         ),
-  // ),
   void _onPermissionSet(
       BuildContext context, QRViewController ctrl, bool granted) {
     if (!granted) {

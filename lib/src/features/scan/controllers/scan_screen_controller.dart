@@ -6,6 +6,8 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qrcodepro/src/constants/enums.dart';
 import 'package:qrcodepro/src/general/general_functions.dart';
 
+//           'Barcode Type: ${describeEnum(scanScreenController.resultFormat)}   Data: ${scanScreenController.resultCode}',
+
 class ScanScreenController extends GetxController {
   static ScanScreenController get instance => Get.find();
   final resultCode = ''.obs;
