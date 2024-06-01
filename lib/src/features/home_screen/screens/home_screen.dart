@@ -48,6 +48,10 @@ class HomeScreen extends StatelessWidget {
                     color: kDarkBlueColor,
                   ),
                   itemLabel: 'scan'.tr,
+                  itemLabelStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 BottomBarItem(
                   inActiveItem: const Icon(
@@ -59,6 +63,10 @@ class HomeScreen extends StatelessWidget {
                     color: kDarkBlueColor,
                   ),
                   itemLabel: 'history'.tr,
+                  itemLabelStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 BottomBarItem(
                   inActiveItem: const Icon(
@@ -70,6 +78,10 @@ class HomeScreen extends StatelessWidget {
                     color: kDarkBlueColor,
                   ),
                   itemLabel: 'create'.tr,
+                  itemLabelStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 BottomBarItem(
                   inActiveItem: const Icon(
@@ -81,6 +93,10 @@ class HomeScreen extends StatelessWidget {
                     color: kDarkBlueColor,
                   ),
                   itemLabel: 'settings'.tr,
+                  itemLabelStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
               onTap: (index) {

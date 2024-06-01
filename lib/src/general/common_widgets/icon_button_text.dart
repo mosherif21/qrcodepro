@@ -23,8 +23,7 @@ class IconButtonText extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: const BorderRadius.all(Radius.circular(15)),
-          splashColor: Colors.black54,
-          hoverColor: Colors.grey.shade50,
+          splashColor: Colors.grey.shade500,
           splashFactory: InkSparkle.splashFactory,
           onTap: () => onPress(),
           child: Padding(

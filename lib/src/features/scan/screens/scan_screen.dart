@@ -79,16 +79,6 @@ class ScanScreen extends StatelessWidget {
                                   icon: Icons.camera_front_outlined,
                                   buttonText: 'flip'.tr,
                                 ),
-                                //     IconButton(
-                                //   enableFeedback: true,
-                                //   tooltip: 'Flip camera',
-                                //   onPressed: scanScreenController
-                                //           .flippingCamera.value
-                                //       ? null
-                                //       : scanScreenController.onFlipCameraPress,
-                                //   icon: const Icon(Icons.camera_front_outlined,
-                                //       color: kDarkBlueColor),
-                                // ),
                               ),
                             ],
                           ),
