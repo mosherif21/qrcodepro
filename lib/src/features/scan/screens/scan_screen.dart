@@ -53,32 +53,31 @@ class ScanScreen extends StatelessWidget {
                                 textColor: kDarkBlueColor,
                                 icon: Icons.image,
                                 buttonText: 'gallery'.tr,
+                                isEnabled: true,
                               ),
                               Obx(
                                 () => IconButtonText(
-                                  onPress: scanScreenController
-                                          .togglingFlash.value
-                                      ? () {}
-                                      : scanScreenController.onFlashTogglePress,
+                                  onPress:
+                                      scanScreenController.onFlashTogglePress,
                                   iconColor: scanScreenController.flashOn.value
                                       ? kDarkBlueColor
                                       : Colors.grey,
                                   textColor: kDarkBlueColor,
                                   icon: Icons.flash_on,
                                   buttonText: 'flash'.tr,
+                                  isEnabled:
+                                      scanScreenController.frontCamera.value
+                                          ? false
+                                          : true,
                                 ),
                               ),
-                              Obx(
-                                () => IconButtonText(
-                                  onPress: scanScreenController
-                                          .flippingCamera.value
-                                      ? () {}
-                                      : scanScreenController.onFlipCameraPress,
-                                  iconColor: kDarkBlueColor,
-                                  textColor: kDarkBlueColor,
-                                  icon: Icons.camera_front_outlined,
-                                  buttonText: 'flip'.tr,
-                                ),
+                              IconButtonText(
+                                onPress: scanScreenController.onFlipCameraPress,
+                                iconColor: kDarkBlueColor,
+                                textColor: kDarkBlueColor,
+                                icon: Icons.camera_front_outlined,
+                                buttonText: 'flip'.tr,
+                                isEnabled: true,
                               ),
                             ],
                           ),

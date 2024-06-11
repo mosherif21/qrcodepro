@@ -6,15 +6,14 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qrcodepro/src/constants/enums.dart';
 import 'package:qrcodepro/src/general/general_functions.dart';
 
-//           'Barcode Type: ${describeEnum(scanScreenController.resultFormat)}   Data: ${scanScreenController.resultCode}',
+//'Barcode Type: ${describeEnum(scanScreenController.resultFormat)}   Data: ${scanScreenController.resultCode}',
 
 class ScanScreenController extends GetxController {
   static ScanScreenController get instance => Get.find();
   final resultCode = ''.obs;
   final qrControllerCreated = false.obs;
   final flashOn = false.obs;
-  final togglingFlash = false.obs;
-  final flippingCamera = false.obs;
+  final frontCamera = false.obs;
   late BarcodeFormat resultFormat;
   late final QRViewController? qrController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -35,16 +34,13 @@ class ScanScreenController extends GetxController {
   }
 
   void onFlashTogglePress() async {
-    togglingFlash.value = true;
     await qrController!.toggleFlash();
-    togglingFlash.value = false;
     flashOn.value = !flashOn.value;
   }
 
   void onFlipCameraPress() async {
-    flippingCamera.value = true;
     await qrController!.flipCamera();
-    flippingCamera.value = false;
+    frontCamera.value = !frontCamera.value;
   }
 
   void onOpenGalleryPress() async {
