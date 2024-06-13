@@ -2,10 +2,10 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../localization/language/language_functions.dart';
-import '../../../general/app_init.dart';
-import '../../../general/general_functions.dart';
-import '../../home_screen/screens/home_screen.dart';
+import '../../localization/language/language_functions.dart';
+import '../features/home_screen/screens/home_screen.dart';
+import 'app_init.dart';
+import 'general_functions.dart';
 
 late SharedPreferences _prefs;
 Future<void> setShowOnBoarding() async {

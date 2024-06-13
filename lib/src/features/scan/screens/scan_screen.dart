@@ -22,10 +22,11 @@ class ScanScreen extends StatelessWidget {
             onQRViewCreated: scanScreenController.onQRViewCreated,
             overlay: QrScannerOverlayShape(
               borderColor: kDarkBlueColor,
-              borderRadius: 10,
+              borderRadius: 0,
               borderLength: 20,
               borderWidth: 10,
-              cutOutSize: screenHeight * 0.3,
+              cutOutSize: screenHeight * 0.38,
+              cutOutBottomOffset: screenHeight * 0.1,
             ),
             onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
           ),
@@ -34,7 +35,7 @@ class ScanScreen extends StatelessWidget {
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: screenHeight * 0.7),
+                      SizedBox(height: screenHeight * 0.65),
                       Center(
                         child: Container(
                           width: screenWidth * 0.6,

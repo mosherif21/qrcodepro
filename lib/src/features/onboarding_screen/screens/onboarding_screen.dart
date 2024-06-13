@@ -8,7 +8,7 @@ import '../../../constants/assets_strings.dart';
 import '../../../constants/colors.dart';
 import '../../../general/common_widgets/language_select.dart';
 import '../../../general/common_widgets/regular_bottom_sheet.dart';
-import '../components/onboarding_functions.dart';
+import '../../../general/shared_preferences_functions.dart';
 import '../components/onboarding_page_widget.dart';
 
 class OnboardingScreen extends StatelessWidget {

@@ -11,8 +11,8 @@ import '../../localization/language/language_functions.dart';
 import '../constants/colors.dart';
 import '../constants/enums.dart';
 import '../features/home_screen/screens/home_screen.dart';
-import '../features/onboarding_screen/components/onboarding_functions.dart';
 import '../features/onboarding_screen/screens/onboarding_screen.dart';
+import 'shared_preferences_functions.dart';
 
 class AppInit {
   static bool showOnBoard = false;

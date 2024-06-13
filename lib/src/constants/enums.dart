@@ -11,3 +11,5 @@ enum ScreenSize { small, medium, large }
 enum FunctionStatus { success, failure }
 
 enum SnackBarType { success, error, info, warning }
+
+enum WifiSecurityType { wpa2, wpa, wep, none }

@@ -6,6 +6,8 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qrcodepro/src/constants/enums.dart';
 import 'package:qrcodepro/src/general/general_functions.dart';
 
+import '../../../constants/no_localization_strings.dart';
+
 //'Barcode Type: ${describeEnum(scanScreenController.resultFormat)}   Data: ${scanScreenController.resultCode}',
 
 class ScanScreenController extends GetxController {
@@ -50,8 +52,7 @@ class ScanScreenController extends GetxController {
     if (addedImage != null) {
       if (!barcodeReaderInitialized) {
         _barcodeReader = FlutterBarcodeSdk();
-        await _barcodeReader.setLicense(
-            'DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ==');
+        await _barcodeReader.setLicense(kBarcodeScanLicense);
         await _barcodeReader.init();
         barcodeReaderInitialized = true;
       }

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../src/constants/enums.dart';
-import '../../src/features/onboarding_screen/components/onboarding_functions.dart';
 import '../../src/general/app_init.dart';
 import '../../src/general/general_functions.dart';
+import '../../src/general/shared_preferences_functions.dart';
 
 const String languageCode = 'languageCode';
 
