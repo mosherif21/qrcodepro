@@ -38,7 +38,7 @@ class ScanScreen extends StatelessWidget {
                       SizedBox(height: screenHeight * 0.65),
                       Center(
                         child: Container(
-                          width: screenWidth * 0.6,
+                          width: screenWidth * 0.65,
                           decoration: const BoxDecoration(
                             color: Colors.white70,
                             borderRadius: BorderRadius.all(Radius.circular(28)),
