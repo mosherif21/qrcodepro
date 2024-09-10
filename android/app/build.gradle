@@ -51,6 +51,20 @@ android {
         versionName flutterVersionName
     }
 
+    flavorDimensions "default"
+
+    productFlavors {
+        development {
+            dimension "default"
+            resValue "string", "app_name", "QrCodePro Development"
+            applicationIdSuffix ".dev"
+        }
+        production {
+            dimension "default"
+            resValue "string", "app_name", "QrCodePro"
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
