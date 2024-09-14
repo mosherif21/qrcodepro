@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:qrcodepro/src/features/database/hive_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sweetsheet/sweetsheet.dart';
 
@@ -36,6 +37,7 @@ class AppInit {
       prefs = await SharedPreferences.getInstance();
       isLocaleSet = await getIfLocaleIsSet();
       showOnBoard = await getShowOnBoarding();
+      await initHive();
       if (isLocaleSet) {
         setLocale = getLocale();
       } else {

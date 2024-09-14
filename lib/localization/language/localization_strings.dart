@@ -33,6 +33,8 @@ class Languages extends Translations {
           'settings': 'Settings',
           'gallery': 'Gallery',
           'flash': 'Flash',
+          'qrcodeNotFound': 'No QrCode detected, please try again',
+          'errorOccurred': 'An error occurred, please try again',
           'flip': 'Flip'
         },
       };

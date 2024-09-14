@@ -1,5 +1,5 @@
-import '../../../constants/enums.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:qrcodepro/src/constants/enums.dart';
 
 abstract class QRCodeData {
   String get type;
@@ -16,11 +16,10 @@ class WifiData extends QRCodeData {
     required this.password,
     required this.securityType,
   });
-  
+
   @override
   @HiveField(0)
   String get type => 'wifi';
-
 }
 
 @HiveType(typeId: 1)
@@ -38,7 +37,6 @@ class ContactData extends QRCodeData {
   @override
   @HiveField(0)
   String get type => 'contact';
-
 }
 
 @HiveType(typeId: 2)
@@ -54,7 +52,6 @@ class SMSData extends QRCodeData {
   @override
   @HiveField(0)
   String get type => 'sms';
-
 }
 
 @HiveType(typeId: 3)
@@ -72,7 +69,6 @@ class EmailData extends QRCodeData {
   @override
   @HiveField(0)
   String get type => 'email';
-
 }
 
 @HiveType(typeId: 4)
@@ -96,12 +92,10 @@ class MyContactCardData extends QRCodeData {
   @override
   @HiveField(0)
   String get type => 'myContactCard';
-
 }
 
-
 class WifiDataAdapter extends TypeAdapter<WifiData> {
-   @override
+  @override
   int get typeId => 0;
   @override
   WifiData read(BinaryReader reader) {
@@ -124,7 +118,7 @@ class WifiDataAdapter extends TypeAdapter<WifiData> {
 }
 
 class ContactDataAdapter extends TypeAdapter<ContactData> {
-   @override
+  @override
   int get typeId => 1;
   @override
   ContactData read(BinaryReader reader) {
@@ -147,7 +141,7 @@ class ContactDataAdapter extends TypeAdapter<ContactData> {
 }
 
 class SMSDataAdapter extends TypeAdapter<SMSData> {
-   @override
+  @override
   int get typeId => 2;
   @override
   SMSData read(BinaryReader reader) {
@@ -167,7 +161,7 @@ class SMSDataAdapter extends TypeAdapter<SMSData> {
 }
 
 class EmailDataAdapter extends TypeAdapter<EmailData> {
-   @override
+  @override
   int get typeId => 3;
   @override
   EmailData read(BinaryReader reader) {
@@ -190,7 +184,7 @@ class EmailDataAdapter extends TypeAdapter<EmailData> {
 }
 
 class MyContactCardDataAdapter extends TypeAdapter<MyContactCardData> {
-   @override
+  @override
   int get typeId => 4;
   @override
   MyContactCardData read(BinaryReader reader) {
