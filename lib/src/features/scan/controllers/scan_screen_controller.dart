@@ -31,6 +31,7 @@ class ScanScreenController extends GetxController {
       controller.scannedDataStream.listen((scanData) {
         if (scanData.code != null) {
           resultFormat = scanData.format;
+          scanData.rawBytes;
           resultCode.value = scanData.code!;
           showSnackBar(
               text: resultCode.value, snackBarType: SnackBarType.success);
@@ -62,41 +63,38 @@ class ScanScreenController extends GetxController {
           barcodeReaderInitialized = true;
         }
         final results = await _barcodeReader.decodeFile(addedImage.path);
-        hideLoadingScreen();
         if (results.isNotEmpty) {
-          // showSnackBar(
-          //     text:
-          //         'Format: ${results.first.format} Code: ${results.first.text}',
-          //     snackBarType: SnackBarType.success);
-
-          final ssid = results.first.text;
+          final imagePath = await storeQrCodeImage(results.first.barcodeBytes);
 
           // Save a QR code
-          await saveQRCodeData(WifiData(
-            ssid: ssid,
-            password: 'myPassword',
-            securityType: WifiSecurityType.wpa2,
-          ));
+          await saveQRCodeData(
+            GenericQRCodeData(value: results.first.text, imagePath: imagePath),
+            QrCodeDataStoreType.scanned,
+          );
 
           // Retrieve all saved QR codes
-          final qrCodes = await getQRCodeData();
+          final qrCodes = await getQRCodeData(QrCodeDataStoreType.scanned);
+          hideLoadingScreen();
           for (final qrCode in qrCodes) {
-            if (qrCode is WifiData) {
+            if (qrCode is GenericQRCodeData) {
               showSnackBar(
-                  text: qrCode.ssid, snackBarType: SnackBarType.success);
+                text: 'Value: ${qrCode.value} image path: ${qrCode.imagePath}',
+                snackBarType: SnackBarType.success,
+              );
             }
           }
         } else {
+          hideLoadingScreen();
           showSnackBar(
               text: 'qrcodeNotFound'.tr, snackBarType: SnackBarType.error);
         }
       } else {
         hideLoadingScreen();
         showSnackBar(
-            text: 'An error occurred, Please try again',
-            snackBarType: SnackBarType.error);
+            text: 'noImageChosen'.tr, snackBarType: SnackBarType.error);
       }
     } catch (exception) {
+      hideLoadingScreen();
       AppInit.logger.e(exception.toString());
       showSnackBar(text: 'errorOccurred'.tr, snackBarType: SnackBarType.error);
     }

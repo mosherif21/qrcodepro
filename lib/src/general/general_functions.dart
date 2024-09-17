@@ -67,27 +67,36 @@ void showSnackBar({
   required SnackBarType snackBarType,
 }) {
   if (Get.overlayContext != null) {
-    final context = Get.overlayContext!;
-    showTopSnackBar(
-      Overlay.of(context),
-      snackBarType == SnackBarType.success
-          ? CustomSnackBar.success(
-              message: text,
-              icon: const Icon(Icons.check_circle_outline_rounded,
-                  color: Color(0x15000000), size: 120),
-            )
-          : snackBarType == SnackBarType.error
-              ? CustomSnackBar.error(
-                  message: text,
-                  icon: const Icon(Icons.error_outline,
-                      color: Color(0x15000000), size: 120),
-                )
-              : CustomSnackBar.info(
-                  message: text,
-                  icon: const Icon(Icons.info_outline_rounded,
-                      color: Color(0x15000000), size: 120),
-                ),
-    );
+    CustomSnackBar snackBar;
+
+    switch (snackBarType) {
+      case SnackBarType.success:
+        snackBar = CustomSnackBar.success(
+          message: text,
+          icon: const Icon(Icons.check_circle_outline_rounded,
+              color: Color(0x15000000), size: 120),
+        );
+        break;
+      case SnackBarType.error:
+        snackBar = CustomSnackBar.error(
+          message: text,
+          icon: const Icon(Icons.error_outline,
+              color: Color(0x15000000), size: 120),
+        );
+        break;
+      case SnackBarType.info:
+        snackBar = CustomSnackBar.info(
+          message: text,
+          icon: const Icon(Icons.info_outline_rounded,
+              color: Color(0x15000000), size: 120),
+        );
+        break;
+      default:
+        // Handle unexpected SnackBarType
+        AppInit.logger.e("Invalid SnackBarType provided.");
+        return;
+    }
+    showTopSnackBar(Overlay.of(Get.overlayContext!), snackBar);
   }
 }
 
@@ -193,19 +202,56 @@ void displayChangeLang() => RegularBottomSheet.showRegularBottomSheet(
       ),
     );
 
+// Future<bool> handleLocationPermission() async {
+//   try {
+//     LocationPermission locationPermission = await Geolocator.checkPermission();
+
+//     if (locationPermission == LocationPermission.always ||
+//         locationPermission == LocationPermission.whileInUse) {
+//       return true;
+//     } else if (locationPermission == LocationPermission.denied) {
+//       locationPermission = await Geolocator.requestPermission();
+//     }
+
+//     if (locationPermission == LocationPermission.always ||
+//         locationPermission == LocationPermission.whileInUse) {
+//       return true;
+//     } else if (locationPermission == LocationPermission.denied) {
+//       showSnackBar(
+//           text: 'enableLocationPermission'.tr,
+//           snackBarType: SnackBarType.error);
+//     } else if (locationPermission == LocationPermission.deniedForever) {
+//       final deniedForeverText = 'locationPermissionDeniedForever'.tr;
+//       displayAlertDialog(
+//         title: 'locationPermission'.tr,
+//         body: deniedForeverText,
+//         positiveButtonText: 'goToSettings'.tr,
+//         negativeButtonText: 'cancel'.tr,
+//         positiveButtonOnPressed: () async {
+//           Get.back();
+//           if (!await Geolocator.openAppSettings()) {
+//             showSnackBar(
+//                 text: deniedForeverText, snackBarType: SnackBarType.error);
+//           }
+//         },
+//         negativeButtonOnPressed: () => Get.back(),
+//         mainIcon: Icons.settings,
+//         color: SweetSheetColor.WARNING,
+//       );
+//     }
+//   } catch (err) {
+//     if (kDebugMode) {
+//       AppInit.logger.e(err.toString());
+//     }
+//   }
+//   return false;
+// }
+
 Future<bool> handleCameraPermission() async => await handleGeneralPermission(
       permission: Permission.camera,
       deniedSnackBarText: 'enableCameraPermission'.tr,
       deniedForeverSnackBarTitle: 'cameraPermission'.tr,
       deniedForeverSnackBarBody: 'cameraPermissionDeniedForever'.tr,
-    );
-
-Future<bool> handleMicrophonePermission() async =>
-    await handleGeneralPermission(
-      permission: Permission.microphone,
-      deniedSnackBarText: 'enableMicPermission'.tr,
-      deniedForeverSnackBarTitle: 'micPermission'.tr,
-      deniedForeverSnackBarBody: 'micPermissionDeniedForever'.tr,
     );
 
 Future<bool> handleContactsPermission() async => await handleGeneralPermission(
@@ -244,66 +290,49 @@ Future<bool> handleNotificationsPermission() async =>
       deniedForeverSnackBarBody: 'notificationsPermissionDeniedForever'.tr,
     );
 
-Future<bool> handleSpeechPermission() async => await handleGeneralPermission(
-      permission: Permission.speech,
-      deniedSnackBarText: 'enableSpeechPermission'.tr,
-      deniedForeverSnackBarTitle: 'speechPermission'.tr,
-      deniedForeverSnackBarBody: 'speechPermissionDeniedForever'.tr,
-    );
-
-Future<bool> handleAndroidBatteryPermission() async =>
-    await handleGeneralPermission(
-      permission: Permission.ignoreBatteryOptimizations,
-      deniedSnackBarText: '',
-      deniedForeverSnackBarTitle: '',
-      deniedForeverSnackBarBody: '',
-    );
-
 Future<bool> handleGeneralPermission({
   required Permission permission,
   required String deniedSnackBarText,
   required String deniedForeverSnackBarTitle,
   required String deniedForeverSnackBarBody,
 }) async {
-  if (!AppInit.isWeb) {
-    try {
-      var permissionStatus = await permission.status;
-      if (permissionStatus.isGranted) {
-        return true;
-      } else if (permissionStatus.isDenied) {
-        permissionStatus = await permission.request();
-      }
+  try {
+    var permissionStatus = await permission.status;
+    if (permissionStatus.isGranted) {
+      return true;
+    } else if (permissionStatus.isDenied) {
+      permissionStatus = await permission.request();
+    }
 
-      if (permissionStatus.isGranted) {
-        return true;
-      } else if (permissionStatus.isDenied) {
-        showSnackBar(
-            text: deniedSnackBarText, snackBarType: SnackBarType.error);
-      } else if (permissionStatus.isPermanentlyDenied) {
-        displayAlertDialog(
-          title: deniedForeverSnackBarTitle,
-          body: deniedForeverSnackBarBody,
-          positiveButtonText: 'goToSettings'.tr,
-          negativeButtonText: 'cancel'.tr,
-          positiveButtonOnPressed: () async {
-            Get.back();
-            if (!await openAppSettings()) {
-              showSnackBar(
-                  text: deniedForeverSnackBarBody,
-                  snackBarType: SnackBarType.error);
-            }
-          },
-          negativeButtonOnPressed: () => Get.back(),
-          mainIcon: Icons.settings,
-          color: SweetSheetColor.WARNING,
-        );
-      }
-    } catch (err) {
-      if (kDebugMode) {
-        AppInit.logger.e(err.toString());
-      }
+    if (permissionStatus.isGranted) {
+      return true;
+    } else if (permissionStatus.isDenied) {
+      showSnackBar(text: deniedSnackBarText, snackBarType: SnackBarType.error);
+    } else if (permissionStatus.isPermanentlyDenied) {
+      displayAlertDialog(
+        title: deniedForeverSnackBarTitle,
+        body: deniedForeverSnackBarBody,
+        positiveButtonText: 'goToSettings'.tr,
+        negativeButtonText: 'cancel'.tr,
+        positiveButtonOnPressed: () async {
+          Get.back();
+          if (!await openAppSettings()) {
+            showSnackBar(
+                text: deniedForeverSnackBarBody,
+                snackBarType: SnackBarType.error);
+          }
+        },
+        negativeButtonOnPressed: () => Get.back(),
+        mainIcon: Icons.settings,
+        color: SweetSheetColor.WARNING,
+      );
+    }
+  } catch (err) {
+    if (kDebugMode) {
+      AppInit.logger.e(err.toString());
     }
   }
+
   return false;
 }
 

@@ -10,11 +10,13 @@ class WifiData extends QRCodeData {
   String ssid;
   String password;
   WifiSecurityType securityType;
+  String imagePath; // Added image path property
 
   WifiData({
     required this.ssid,
     required this.password,
     required this.securityType,
+    required this.imagePath,
   });
 
   @override
@@ -27,11 +29,13 @@ class ContactData extends QRCodeData {
   String name;
   String phoneNumber;
   String email;
+  String imagePath; // Added image path property
 
   ContactData({
     required this.name,
     required this.phoneNumber,
     required this.email,
+    required this.imagePath,
   });
 
   @override
@@ -43,10 +47,12 @@ class ContactData extends QRCodeData {
 class SMSData extends QRCodeData {
   String phoneNumber;
   String msgBody;
+  String imagePath; // Added image path property
 
   SMSData({
     required this.phoneNumber,
     required this.msgBody,
+    required this.imagePath,
   });
 
   @override
@@ -59,11 +65,13 @@ class EmailData extends QRCodeData {
   String email;
   String subject;
   String content;
+  String imagePath; // Added image path property
 
   EmailData({
     required this.email,
     required this.subject,
     required this.content,
+    required this.imagePath,
   });
 
   @override
@@ -79,6 +87,7 @@ class MyContactCardData extends QRCodeData {
   String address;
   String birthDate;
   String organization;
+  String imagePath; // Added image path property
 
   MyContactCardData({
     required this.name,
@@ -87,6 +96,7 @@ class MyContactCardData extends QRCodeData {
     required this.address,
     required this.birthDate,
     required this.organization,
+    required this.imagePath,
   });
 
   @override
@@ -94,18 +104,57 @@ class MyContactCardData extends QRCodeData {
   String get type => 'myContactCard';
 }
 
+@HiveType(typeId: 5)
+class GenericQRCodeData extends QRCodeData {
+  final String value;
+  String imagePath; // Added image path property
+
+  GenericQRCodeData({
+    required this.value,
+    required this.imagePath,
+  });
+
+  @HiveField(0)
+  @override
+  final String type = 'generic';
+}
+
+// Adapter for GenericQRCodeData (optional, can leverage StringAdapter for simplicity)
+
+class GenericQRCodeDataAdapter extends TypeAdapter<GenericQRCodeData> {
+  @override
+  int get typeId => 5;
+
+  @override
+  GenericQRCodeData read(BinaryReader reader) {
+    final value = reader.readString();
+    final imagePath = reader.readString();
+    return GenericQRCodeData(value: value, imagePath: imagePath);
+  }
+
+  @override
+  void write(BinaryWriter writer, GenericQRCodeData obj) {
+    writer.writeString(obj.value);
+    writer.writeString(obj.imagePath);
+  }
+}
+
+// Update adapters for other data types (WifiData, ContactData, etc.) to include imagePath field
 class WifiDataAdapter extends TypeAdapter<WifiData> {
   @override
   int get typeId => 0;
+
   @override
   WifiData read(BinaryReader reader) {
     final ssid = reader.readString();
     final password = reader.readString();
     final securityType = WifiSecurityType.values.byName(reader.readString());
+    final imagePath = reader.readString();
     return WifiData(
       ssid: ssid,
       password: password,
       securityType: securityType,
+      imagePath: imagePath,
     );
   }
 
@@ -114,21 +163,25 @@ class WifiDataAdapter extends TypeAdapter<WifiData> {
     writer.writeString(obj.ssid);
     writer.writeString(obj.password);
     writer.writeString(obj.securityType.name);
+    writer.writeString(obj.imagePath);
   }
 }
 
 class ContactDataAdapter extends TypeAdapter<ContactData> {
   @override
   int get typeId => 1;
+
   @override
   ContactData read(BinaryReader reader) {
     final name = reader.readString();
     final phoneNumber = reader.readString();
     final email = reader.readString();
+    final imagePath = reader.readString();
     return ContactData(
       name: name,
       phoneNumber: phoneNumber,
       email: email,
+      imagePath: imagePath,
     );
   }
 
@@ -137,19 +190,23 @@ class ContactDataAdapter extends TypeAdapter<ContactData> {
     writer.writeString(obj.name);
     writer.writeString(obj.phoneNumber);
     writer.writeString(obj.email);
+    writer.writeString(obj.imagePath);
   }
 }
 
 class SMSDataAdapter extends TypeAdapter<SMSData> {
   @override
   int get typeId => 2;
+
   @override
   SMSData read(BinaryReader reader) {
     final phoneNumber = reader.readString();
     final msgBody = reader.readString();
+    final imagePath = reader.readString();
     return SMSData(
       phoneNumber: phoneNumber,
       msgBody: msgBody,
+      imagePath: imagePath,
     );
   }
 
@@ -157,21 +214,25 @@ class SMSDataAdapter extends TypeAdapter<SMSData> {
   void write(BinaryWriter writer, SMSData obj) {
     writer.writeString(obj.phoneNumber);
     writer.writeString(obj.msgBody);
+    writer.writeString(obj.imagePath);
   }
 }
 
 class EmailDataAdapter extends TypeAdapter<EmailData> {
   @override
   int get typeId => 3;
+
   @override
   EmailData read(BinaryReader reader) {
     final email = reader.readString();
     final subject = reader.readString();
     final content = reader.readString();
+    final imagePath = reader.readString();
     return EmailData(
       email: email,
       subject: subject,
       content: content,
+      imagePath: imagePath,
     );
   }
 
@@ -180,12 +241,14 @@ class EmailDataAdapter extends TypeAdapter<EmailData> {
     writer.writeString(obj.email);
     writer.writeString(obj.subject);
     writer.writeString(obj.content);
+    writer.writeString(obj.imagePath);
   }
 }
 
 class MyContactCardDataAdapter extends TypeAdapter<MyContactCardData> {
   @override
   int get typeId => 4;
+
   @override
   MyContactCardData read(BinaryReader reader) {
     final name = reader.readString();
@@ -194,6 +257,7 @@ class MyContactCardDataAdapter extends TypeAdapter<MyContactCardData> {
     final address = reader.readString();
     final birthDate = reader.readString();
     final organization = reader.readString();
+    final imagePath = reader.readString();
     return MyContactCardData(
       name: name,
       phoneNumber: phoneNumber,
@@ -201,6 +265,7 @@ class MyContactCardDataAdapter extends TypeAdapter<MyContactCardData> {
       address: address,
       birthDate: birthDate,
       organization: organization,
+      imagePath: imagePath,
     );
   }
 
@@ -212,147 +277,6 @@ class MyContactCardDataAdapter extends TypeAdapter<MyContactCardData> {
     writer.writeString(obj.address);
     writer.writeString(obj.birthDate);
     writer.writeString(obj.organization);
+    writer.writeString(obj.imagePath);
   }
 }
-
-
-
-// class WifiFormat {
-//   String ssid;
-//   String password;
-//   WifiSecurityType securityType;
-
-//   WifiFormat({
-//     required this.ssid,
-//     required this.password,
-//     required this.securityType,
-//   });
-
-//   Map<String, dynamic> toJson() => {
-//         'ssid': ssid,
-//         'password': password,
-//         'securityType': securityType.toString(),
-//       };
-
-//   factory WifiFormat.fromMap(Map<String, dynamic> map) {
-//     return WifiFormat(
-//       ssid: map['ssid'] ?? '',
-//       password: map['password'] ?? '',
-//       securityType: map['securityType'] == 'wpa2'
-//           ? WifiSecurityType.wpa2
-//           : map['securityType'] == 'wpa'
-//               ? WifiSecurityType.wpa
-//               : map['securityType'] == 'wep'
-//                   ? WifiSecurityType.wep
-//                   : WifiSecurityType.none,
-//     );
-//   }
-// }
-
-// class ContactFormat {
-//   String name;
-//   String phoneNumber;
-//   String email;
-
-//   ContactFormat({
-//     required this.name,
-//     required this.phoneNumber,
-//     required this.email,
-//   });
-
-//   Map<String, dynamic> toMap() => {
-//         'name': name,
-//         'phoneNumber': phoneNumber,
-//         'email': email,
-//       };
-//   factory ContactFormat.fromMap(Map<String, dynamic> map) {
-//     return ContactFormat(
-//       name: map['name'] ?? '',
-//       phoneNumber: map['phoneNumber'] ?? '',
-//       email: map['email'] ?? '',
-//     );
-//   }
-// }
-
-// class SmsFormat {
-//   String phoneNumber;
-//   String msgBody;
-
-//   SmsFormat({
-//     required this.phoneNumber,
-//     required this.msgBody,
-//   });
-
-//   Map<String, dynamic> toMap() => {
-//         'phoneNumber': phoneNumber,
-//         'msgBody': msgBody,
-//       };
-//   factory SmsFormat.fromMap(Map<String, dynamic> map) {
-//     return SmsFormat(
-//       phoneNumber: map['phoneNumber'] ?? '',
-//       msgBody: map['msgBody'] ?? '',
-//     );
-//   }
-// }
-
-// class EmailFormat {
-//   String email;
-//   String subject;
-//   String content;
-
-//   EmailFormat({
-//     required this.email,
-//     required this.subject,
-//     required this.content,
-//   });
-
-//   Map<String, dynamic> toMap() => {
-//         'email': email,
-//         'subject': subject,
-//         'content': content,
-//       };
-//   factory EmailFormat.fromMap(Map<String, dynamic> map) {
-//     return EmailFormat(
-//       email: map['email'] ?? '',
-//       subject: map['subject'] ?? '',
-//       content: map['content'] ?? '',
-//     );
-//   }
-// }
-
-// class MyContactCard {
-//   String name;
-//   String phoneNumber;
-//   String email;
-//   String address;
-//   String birthDate;
-//   String organization;
-
-//   MyContactCard({
-//     required this.name,
-//     required this.phoneNumber,
-//     required this.email,
-//     required this.address,
-//     required this.birthDate,
-//     required this.organization,
-//   });
-
-//   Map<String, dynamic> toMap() => {
-//         'name': name,
-//         'phoneNumber': phoneNumber,
-//         'email': email,
-//         'address': address,
-//         'birthDate': birthDate,
-//         'organization': organization,
-//       };
-//   factory MyContactCard.fromMap(Map<String, dynamic> map) {
-//     return MyContactCard(
-//       name: map['name'] ?? '',
-//       phoneNumber: map['phoneNumber'] ?? '',
-//       email: map['email'] ?? '',
-//       address: map['address'] ?? '',
-//       birthDate: map['birthDate'] ?? '',
-//       organization: map['organization'] ?? '',
-//     );
-//   }
-// }

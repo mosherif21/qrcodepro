@@ -34,6 +34,7 @@ class Languages extends Translations {
           'gallery': 'Gallery',
           'flash': 'Flash',
           'qrcodeNotFound': 'No QrCode detected, please try again',
+          'noImageChosen': 'You didn\'t choose any image, please try again',
           'errorOccurred': 'An error occurred, please try again',
           'flip': 'Flip'
         },
