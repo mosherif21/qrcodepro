@@ -46,6 +46,7 @@ dependencies:
   flutter_barcode_sdk: ^2.2.6
   hive_flutter: ^1.1.0
   path_provider: ^2.1.4
+  syncfusion_flutter_barcodes: ^27.1.48
 
   #state management dependencies
   get: ^4.6.5

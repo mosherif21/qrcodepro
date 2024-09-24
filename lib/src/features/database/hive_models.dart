@@ -10,13 +10,11 @@ class WifiData extends QRCodeData {
   String ssid;
   String password;
   WifiSecurityType securityType;
-  String imagePath; // Added image path property
 
   WifiData({
     required this.ssid,
     required this.password,
     required this.securityType,
-    required this.imagePath,
   });
 
   @override
@@ -29,13 +27,11 @@ class ContactData extends QRCodeData {
   String name;
   String phoneNumber;
   String email;
-  String imagePath; // Added image path property
 
   ContactData({
     required this.name,
     required this.phoneNumber,
     required this.email,
-    required this.imagePath,
   });
 
   @override
@@ -47,12 +43,10 @@ class ContactData extends QRCodeData {
 class SMSData extends QRCodeData {
   String phoneNumber;
   String msgBody;
-  String imagePath; // Added image path property
 
   SMSData({
     required this.phoneNumber,
     required this.msgBody,
-    required this.imagePath,
   });
 
   @override
@@ -65,13 +59,11 @@ class EmailData extends QRCodeData {
   String email;
   String subject;
   String content;
-  String imagePath; // Added image path property
 
   EmailData({
     required this.email,
     required this.subject,
     required this.content,
-    required this.imagePath,
   });
 
   @override
@@ -87,7 +79,6 @@ class MyContactCardData extends QRCodeData {
   String address;
   String birthDate;
   String organization;
-  String imagePath; // Added image path property
 
   MyContactCardData({
     required this.name,
@@ -96,7 +87,6 @@ class MyContactCardData extends QRCodeData {
     required this.address,
     required this.birthDate,
     required this.organization,
-    required this.imagePath,
   });
 
   @override
@@ -107,11 +97,9 @@ class MyContactCardData extends QRCodeData {
 @HiveType(typeId: 5)
 class GenericQRCodeData extends QRCodeData {
   final String value;
-  String imagePath; // Added image path property
 
   GenericQRCodeData({
     required this.value,
-    required this.imagePath,
   });
 
   @HiveField(0)
@@ -119,7 +107,71 @@ class GenericQRCodeData extends QRCodeData {
   final String type = 'generic';
 }
 
-// Adapter for GenericQRCodeData (optional, can leverage StringAdapter for simplicity)
+@HiveType(typeId: 6)
+class WebsiteData extends QRCodeData {
+  final String url;
+
+  WebsiteData({
+    required this.url,
+  });
+
+  @override
+  @HiveField(0)
+  String get type => 'website';
+}
+
+@HiveType(typeId: 7)
+class MobileNumberData extends QRCodeData {
+  final String number;
+
+  MobileNumberData({
+    required this.number,
+  });
+
+  @override
+  @HiveField(0)
+  String get type => 'mobileNumber';
+}
+
+// Adapters
+
+class WebsiteDataAdapter extends TypeAdapter<WebsiteData> {
+  @override
+  int get typeId => 6;
+
+  @override
+  WebsiteData read(BinaryReader reader) {
+    final url = reader.readString();
+
+    return WebsiteData(
+      url: url,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, WebsiteData obj) {
+    writer.writeString(obj.url);
+  }
+}
+
+class MobileNumberDataAdapter extends TypeAdapter<MobileNumberData> {
+  @override
+  int get typeId => 7;
+
+  @override
+  MobileNumberData read(BinaryReader reader) {
+    final number = reader.readString();
+
+    return MobileNumberData(
+      number: number,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, MobileNumberData obj) {
+    writer.writeString(obj.number);
+  }
+}
 
 class GenericQRCodeDataAdapter extends TypeAdapter<GenericQRCodeData> {
   @override
@@ -128,18 +180,18 @@ class GenericQRCodeDataAdapter extends TypeAdapter<GenericQRCodeData> {
   @override
   GenericQRCodeData read(BinaryReader reader) {
     final value = reader.readString();
-    final imagePath = reader.readString();
-    return GenericQRCodeData(value: value, imagePath: imagePath);
+
+    return GenericQRCodeData(
+      value: value,
+    );
   }
 
   @override
   void write(BinaryWriter writer, GenericQRCodeData obj) {
     writer.writeString(obj.value);
-    writer.writeString(obj.imagePath);
   }
 }
 
-// Update adapters for other data types (WifiData, ContactData, etc.) to include imagePath field
 class WifiDataAdapter extends TypeAdapter<WifiData> {
   @override
   int get typeId => 0;
@@ -149,12 +201,11 @@ class WifiDataAdapter extends TypeAdapter<WifiData> {
     final ssid = reader.readString();
     final password = reader.readString();
     final securityType = WifiSecurityType.values.byName(reader.readString());
-    final imagePath = reader.readString();
+
     return WifiData(
       ssid: ssid,
       password: password,
       securityType: securityType,
-      imagePath: imagePath,
     );
   }
 
@@ -163,7 +214,6 @@ class WifiDataAdapter extends TypeAdapter<WifiData> {
     writer.writeString(obj.ssid);
     writer.writeString(obj.password);
     writer.writeString(obj.securityType.name);
-    writer.writeString(obj.imagePath);
   }
 }
 
@@ -176,12 +226,11 @@ class ContactDataAdapter extends TypeAdapter<ContactData> {
     final name = reader.readString();
     final phoneNumber = reader.readString();
     final email = reader.readString();
-    final imagePath = reader.readString();
+
     return ContactData(
       name: name,
       phoneNumber: phoneNumber,
       email: email,
-      imagePath: imagePath,
     );
   }
 
@@ -190,7 +239,6 @@ class ContactDataAdapter extends TypeAdapter<ContactData> {
     writer.writeString(obj.name);
     writer.writeString(obj.phoneNumber);
     writer.writeString(obj.email);
-    writer.writeString(obj.imagePath);
   }
 }
 
@@ -202,11 +250,10 @@ class SMSDataAdapter extends TypeAdapter<SMSData> {
   SMSData read(BinaryReader reader) {
     final phoneNumber = reader.readString();
     final msgBody = reader.readString();
-    final imagePath = reader.readString();
+
     return SMSData(
       phoneNumber: phoneNumber,
       msgBody: msgBody,
-      imagePath: imagePath,
     );
   }
 
@@ -214,7 +261,6 @@ class SMSDataAdapter extends TypeAdapter<SMSData> {
   void write(BinaryWriter writer, SMSData obj) {
     writer.writeString(obj.phoneNumber);
     writer.writeString(obj.msgBody);
-    writer.writeString(obj.imagePath);
   }
 }
 
@@ -227,12 +273,11 @@ class EmailDataAdapter extends TypeAdapter<EmailData> {
     final email = reader.readString();
     final subject = reader.readString();
     final content = reader.readString();
-    final imagePath = reader.readString();
+
     return EmailData(
       email: email,
       subject: subject,
       content: content,
-      imagePath: imagePath,
     );
   }
 
@@ -241,7 +286,6 @@ class EmailDataAdapter extends TypeAdapter<EmailData> {
     writer.writeString(obj.email);
     writer.writeString(obj.subject);
     writer.writeString(obj.content);
-    writer.writeString(obj.imagePath);
   }
 }
 
@@ -257,7 +301,7 @@ class MyContactCardDataAdapter extends TypeAdapter<MyContactCardData> {
     final address = reader.readString();
     final birthDate = reader.readString();
     final organization = reader.readString();
-    final imagePath = reader.readString();
+
     return MyContactCardData(
       name: name,
       phoneNumber: phoneNumber,
@@ -265,7 +309,6 @@ class MyContactCardDataAdapter extends TypeAdapter<MyContactCardData> {
       address: address,
       birthDate: birthDate,
       organization: organization,
-      imagePath: imagePath,
     );
   }
 
@@ -277,6 +320,5 @@ class MyContactCardDataAdapter extends TypeAdapter<MyContactCardData> {
     writer.writeString(obj.address);
     writer.writeString(obj.birthDate);
     writer.writeString(obj.organization);
-    writer.writeString(obj.imagePath);
   }
 }

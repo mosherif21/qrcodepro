@@ -36,7 +36,35 @@ class Languages extends Translations {
           'qrcodeNotFound': 'No QrCode detected, please try again',
           'noImageChosen': 'You didn\'t choose any image, please try again',
           'errorOccurred': 'An error occurred, please try again',
-          'flip': 'Flip'
+          'flip': 'Flip',
+          'enableLocationService':
+              'Please enable location service to use this feature',
+          'acceptLocationPermission':
+              'Please enable location service to use this feature',
+          'locationPermission': 'Location permission',
+          'locationPermissionDeniedForever':
+              'Locations permission denied forever please enable it from the settings',
+          'cameraPermission': 'Camera permission',
+          'cameraPermissionDeniedForever':
+              'Camera permission denied forever please enable it from the settings',
+          'storagePermission': 'Storage permission',
+          'storagePermissionDeniedForever':
+              'Storage permission denied forever please enable it from the settings',
+          'callPermission': 'Call permission',
+          'callPermissionDeniedForever':
+              'Call permission denied forever please enable it from the settings',
+          'micPermission': 'Microphone permission',
+          'micPermissionDeniedForever':
+              'Microphone permission denied forever please enable it from the settings',
+          'contactsPermission': 'Contacts permission',
+          'contactsPermissionDeniedForever':
+              'Contacts permission denied forever please enable it from the settings',
+          'enableLocationPermission': 'Please accept location permission',
+          'enableCameraPermission': 'Please accept camera permission',
+          'enableStoragePermission': 'Please accept storage permission',
+          'enableNotificationsPermission':
+              'Please accept notifications permission',
+          'qrcodeDetails': 'QrCode Details',
         },
       };
 }
