@@ -65,6 +65,14 @@ class Languages extends Translations {
           'enableNotificationsPermission':
               'Please accept notifications permission',
           'qrcodeDetails': 'QrCode Details',
+          'qrcode': 'QrCode',
+          'wifi': 'Wi-Fi',
+          'contact': 'Contact',
+          'sms': 'SMS',
+          'email': 'E-Mail',
+          'website': 'Website',
+          'contactCard': 'Contact Card',
+          'number': 'Number',
         },
       };
 }

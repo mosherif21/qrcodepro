@@ -13,8 +13,6 @@ class HomeScreenController extends GetxController {
     // await handleStoragePermission();
     super.onReady();
   }
-  // final navBarIndex = 0.obs;
-  // navigationBarOnTap(int navIndex) => navBarIndex.value = navIndex;
 
   /// Controller to handle PageView and also handles initial page
   final pageController = PageController(initialPage: 0);

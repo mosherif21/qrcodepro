@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_barcode_sdk/flutter_barcode_sdk.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_code_tools/qr_code_tools.dart';
 import 'package:qrcodepro/src/constants/enums.dart';
 import 'package:qrcodepro/src/features/database/hive_functions.dart';
-import 'package:qrcodepro/src/features/scan/components/qrcode_details.dart';
+import 'package:qrcodepro/src/features/scan/components/scanned_qrcode_details.dart';
 import 'package:qrcodepro/src/general/app_init.dart';
 import 'package:qrcodepro/src/general/general_functions.dart';
-import '../../../constants/no_localization_strings.dart';
 
 class ScanScreenController extends GetxController {
   static ScanScreenController get instance => Get.find();
@@ -19,8 +18,6 @@ class ScanScreenController extends GetxController {
   late BarcodeFormat resultFormat;
   late final QRViewController? cameraQrController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  bool barcodeReaderInitialized = false;
-  late final FlutterBarcodeSdk _barcodeReader;
 
   void onQRViewCreated(QRViewController controller) {
     if (!qrControllerCreated.value) {
@@ -28,7 +25,7 @@ class ScanScreenController extends GetxController {
       qrControllerCreated.value = true;
       controller.scannedDataStream.listen((scanData) {
         if (scanData.code != null) {
-          final resultValue = scanData.code!;
+          final resultValue = scanData.code!.trim();
           final resultQrcodeData = generateQRCodeData(qrCodeText: resultValue);
           Get.to(
               () => QrcodeDetails(
@@ -56,22 +53,17 @@ class ScanScreenController extends GetxController {
       final picker = ImagePicker();
       final addedImage = await picker.pickImage(source: ImageSource.gallery);
       if (addedImage != null) {
-        if (!barcodeReaderInitialized) {
-          _barcodeReader = FlutterBarcodeSdk();
-          await _barcodeReader.setLicense(kBarcodeScanLicense);
-          await _barcodeReader.init();
-          barcodeReaderInitialized = true;
-        }
-        final results = await _barcodeReader.decodeFile(addedImage.path);
-        if (results.isNotEmpty) {
+        final result = await QrCodeToolsPlugin.decodeFrom(addedImage.path);
+        if (result != null) {
           hideLoadingScreen();
-          final resultValue = results.first.text;
+          final resultValue = result.trim();
           final resultQrcodeData = generateQRCodeData(qrCodeText: resultValue);
+
           Get.to(
-            () => QrcodeDetails(
-              qrCodeData: resultQrcodeData,
-            ),
-          );
+              () => QrcodeDetails(
+                    qrCodeData: resultQrcodeData,
+                  ),
+              transition: getPageTransition());
         } else {
           hideLoadingScreen();
           showSnackBar(
@@ -96,7 +88,6 @@ class ScanScreenController extends GetxController {
   //           QrCodeDataStoreType.scanned,
   //         );
   
-
   //  final imagePath =
   //             await storeQrCodeImage(Uint8List.fromList(resultQrBytes!));
 

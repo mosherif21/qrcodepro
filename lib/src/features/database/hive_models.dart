@@ -10,11 +10,13 @@ class WifiData extends QRCodeData {
   String ssid;
   String password;
   WifiSecurityType securityType;
+  bool isHidden;
 
   WifiData({
     required this.ssid,
     required this.password,
     required this.securityType,
+    required this.isHidden,
   });
 
   @override
@@ -121,16 +123,16 @@ class WebsiteData extends QRCodeData {
 }
 
 @HiveType(typeId: 7)
-class MobileNumberData extends QRCodeData {
+class NumberData extends QRCodeData {
   final String number;
 
-  MobileNumberData({
+  NumberData({
     required this.number,
   });
 
   @override
   @HiveField(0)
-  String get type => 'mobileNumber';
+  String get type => 'number';
 }
 
 // Adapters
@@ -154,21 +156,21 @@ class WebsiteDataAdapter extends TypeAdapter<WebsiteData> {
   }
 }
 
-class MobileNumberDataAdapter extends TypeAdapter<MobileNumberData> {
+class NumberDataAdapter extends TypeAdapter<NumberData> {
   @override
   int get typeId => 7;
 
   @override
-  MobileNumberData read(BinaryReader reader) {
+  NumberData read(BinaryReader reader) {
     final number = reader.readString();
 
-    return MobileNumberData(
+    return NumberData(
       number: number,
     );
   }
 
   @override
-  void write(BinaryWriter writer, MobileNumberData obj) {
+  void write(BinaryWriter writer, NumberData obj) {
     writer.writeString(obj.number);
   }
 }
@@ -200,12 +202,14 @@ class WifiDataAdapter extends TypeAdapter<WifiData> {
   WifiData read(BinaryReader reader) {
     final ssid = reader.readString();
     final password = reader.readString();
+    final isHidden = reader.readBool();
     final securityType = WifiSecurityType.values.byName(reader.readString());
 
     return WifiData(
       ssid: ssid,
       password: password,
       securityType: securityType,
+      isHidden: isHidden,
     );
   }
 

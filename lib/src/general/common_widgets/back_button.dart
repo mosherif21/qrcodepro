@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qrcodepro/src/constants/colors.dart';
 
 class RegularBackButton extends StatelessWidget {
   const RegularBackButton({Key? key, required this.padding}) : super(key: key);
@@ -15,6 +16,7 @@ class RegularBackButton extends StatelessWidget {
         icon: const Center(
           child: Icon(
             Icons.arrow_back_ios_sharp,
+            color: kDarkBlueColor,
             size: 28,
           ),
         ),

@@ -1,7 +1,7 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qrcodepro/src/features/database/hive_models.dart';
+import 'package:qrcodepro/src/features/scan/controllers/qrcode_details_controller.dart';
 import 'package:qrcodepro/src/general/common_widgets/back_button.dart';
 
 class QrcodeDetails extends StatelessWidget {
@@ -13,14 +13,11 @@ class QrcodeDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(QrCodeDetailsController());
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         leading: const RegularBackButton(padding: 0),
-        title: AutoSizeText(
-          'qrcodeDetails'.tr,
-          maxLines: 1,
-        ),
+        title: controller.getScreenTitle(qrCodeData.type),
         titleTextStyle: const TextStyle(
             fontSize: 25, fontWeight: FontWeight.w600, color: Colors.black),
         elevation: 0,
@@ -29,7 +26,7 @@ class QrcodeDetails extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          Text(qrCodeData.type),
+          Text((qrCodeData as WebsiteData).url),
           // SizedBox(
           //   height: 200,
           //   child: SfBarcodeGenerator(
